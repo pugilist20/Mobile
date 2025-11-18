@@ -88,3 +88,56 @@ fun ProfileSection() {
         )
     }
 }
+
+@Composable
+fun ContactSection() {
+    Column(
+        modifier = Modifier.padding(bottom = 32.dp),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Row {
+            Icon(
+                imageVector = Icons.Default.Phone,
+                contentDescription = stringResource(R.string.phone),
+                tint = Color(0xffffffff),
+                modifier = Modifier.padding(end = 10.dp)
+            )
+            Text(
+                text = stringResource(R.string.phone),
+                color = Color(0xffffffff)
+            )
+        }
+        Row {
+            Icon(
+                imageVector = Icons.Default.Send,
+                contentDescription = stringResource(R.string.telegram),
+                tint = Color(0xff0039a6),
+                modifier = Modifier.padding(end = 10.dp)
+            )
+            Text(
+                text = stringResource(R.string.telegram),
+                color = Color(0xff0039a6)
+            )
+        }
+        Row {
+            Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = stringResource(R.string.email),
+                tint = Color(0xffd52b1e),
+                modifier = Modifier.padding(end = 10.dp)
+            )
+            Text(
+                text = stringResource(R.string.email),
+                color = Color(0xffd52b1e)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BusinessCardPreview() {
+    BusinessCardTheme {
+        BusinessCard()
+    }
+}
