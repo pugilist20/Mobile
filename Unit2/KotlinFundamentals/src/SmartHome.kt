@@ -10,11 +10,11 @@ open class SmartDevice(val name: String, val category: String) {
         }
     }
 
-    fun turnOn() {
+    open fun turnOn() {
         println("Smart device is turned on.")
     }
 
-    fun turnOff() {
+    open fun turnOff() {
         println("Smart device is turned off.")
     }
 }
@@ -44,6 +44,60 @@ class SmartTvDevice(deviceName: String, deviceCategory: String) :
     fun nextChannel() {
         channelNumber++
         println("Channel number increased to $channelNumber.")
+    }
+}
+
+class SmartLightDevice(deviceName: String, deviceCategory: String) :
+    SmartDevice(name = deviceName, category = deviceCategory) {
+
+    var brightnessLevel = 0
+        set(value) {
+            if (value in 0..100) {
+                field = value
+            }
+        }
+
+    fun increaseBrightness() {
+        brightnessLevel++
+        println("Brightness increased to $brightnessLevel.")
+    }
+}
+
+class SmartHome(
+    val smartTvDevice: SmartTvDevice,
+    val smartLightDevice: SmartLightDevice
+) {
+    fun turnOnTv() {
+        smartTvDevice.turnOn()
+    }
+
+    fun turnOffTv() {
+        smartTvDevice.turnOff()
+    }
+
+    fun increaseTvVolume() {
+        smartTvDevice.increaseSpeakerVolume()
+    }
+
+    fun changeTvChannelToNext() {
+        smartTvDevice.nextChannel()
+    }
+
+    fun turnOnLight() {
+        smartLightDevice.turnOn()
+    }
+
+    fun turnOffLight() {
+        smartLightDevice.turnOff()
+    }
+
+    fun increaseLightBrightness() {
+        smartLightDevice.increaseBrightness()
+    }
+
+    fun turnOffAllDevices() {
+        turnOffTv()
+        turnOffLight()
     }
 }
 
