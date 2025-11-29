@@ -45,6 +45,19 @@ class SmartTvDevice(deviceName: String, deviceCategory: String) :
         channelNumber++
         println("Channel number increased to $channelNumber.")
     }
+
+    override fun turnOn() {
+        deviceStatus = "on"
+        println(
+            "$name is turned on. Speaker volume is set to $speakerVolume and channel number is " +
+                    "set to $channelNumber."
+        )
+    }
+
+    override fun turnOff() {
+        deviceStatus = "off"
+        println("$name turned off")
+    }
 }
 
 class SmartLightDevice(deviceName: String, deviceCategory: String) :
@@ -112,8 +125,9 @@ class SmartHome(
 }
 
 fun main() {
-    val smartTvDevice = SmartDevice()
-    println("Device name is: ${smartTvDevice.name}")
-    smartTvDevice.turnOn()
-    smartTvDevice.turnOff()
+    var smartDevice: SmartDevice = SmartTvDevice("Android TV", "Entertainment")
+    smartDevice.turnOn()
+
+    smartDevice = SmartLightDevice("Google Light", "Utility")
+    smartDevice.turnOn()
 }
