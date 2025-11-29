@@ -15,6 +15,10 @@ open class SmartDevice(val name: String, val category: String) {
     open fun turnOff() {
         deviceStatus = "off"
     }
+
+    fun printDeviceInfo() {
+        println("Device name: $name, category: $category, type: $deviceType");
+    }
 }
 
 class SmartTvDevice(deviceName: String, deviceCategory: String) :
@@ -27,20 +31,45 @@ class SmartTvDevice(deviceName: String, deviceCategory: String) :
     private var channelNumber by RangeRegulator(initialValue = 1, minValue = 0, maxValue = 200)
 
     fun increaseSpeakerVolume() {
-        speakerVolume++
-        println("Speaker volume increased to $speakerVolume.")
+        if (deviceStatus == "on") {
+            speakerVolume++
+            println("Speaker volume increased to $speakerVolume.")
+        } else {
+            println("Volume cannot be changed: $name is turned off")
+        }
+    }
+
+    fun decreaseSpeakerVolume() {
+        if (deviceStatus == "on") {
+            speakerVolume--
+            println("Speaker volume decreased to $speakerVolume.")
+        } else {
+            println("Volume cannot be changed: $name is turned off")
+        }
     }
 
     fun nextChannel() {
-        channelNumber++
-        println("Channel number increased to $channelNumber.")
+        if (deviceStatus == "on") {
+            channelNumber++
+            println("Channel number increased to $channelNumber.")
+        } else {
+            println("Volume cannot be changed: $name is turned off")
+        }
+    }
+
+    fun previousChannel() {
+        if (deviceStatus == "on") {
+            channelNumber--
+            println("Channel number decreased to $channelNumber.")
+        } else {
+            println("Volume cannot be changed: $name is turned off")
+        }
     }
 
     override fun turnOn() {
         super.turnOn()
         println(
-            "$name is turned on. Speaker volume is set to $speakerVolume and channel number is " +
-                    "set to $channelNumber."
+            "$name is turned on. Speaker volume is set to $speakerVolume and channel number is set to $channelNumber."
         )
     }
 
@@ -58,8 +87,21 @@ class SmartLightDevice(deviceName: String, deviceCategory: String) :
     private var brightnessLevel by RangeRegulator(initialValue = 0, minValue = 0, maxValue = 100)
 
     fun increaseBrightness() {
-        brightnessLevel++
-        println("Brightness increased to $brightnessLevel.")
+        if (deviceStatus == "on") {
+            brightnessLevel++
+            println("Brightness increased to $brightnessLevel.")
+        } else {
+            println("Volume cannot be changed: $name is turned off")
+        }
+    }
+
+    fun decreaseBrightness() {
+        if (deviceStatus == "on") {
+            brightnessLevel--
+            println("Brightness decreased to $brightnessLevel.")
+        } else {
+            println("Volume cannot be changed: $name is turned off")
+        }
     }
 
     override fun turnOn() {
@@ -84,43 +126,76 @@ class SmartHome(
         private set
 
     fun turnOnTv() {
-        deviceTurnOnCount++
-        smartTvDevice.turnOn()
+        if (smartTvDevice.deviceStatus != "on") {
+            deviceTurnOnCount++
+            smartTvDevice.turnOn()
+        }
     }
 
     fun turnOffTv() {
-        deviceTurnOnCount--
-        smartTvDevice.turnOff()
+        if (smartTvDevice.deviceStatus == "on") {
+            deviceTurnOnCount--
+            smartTvDevice.turnOff()
+        }
     }
 
     fun increaseTvVolume() {
         smartTvDevice.increaseSpeakerVolume()
     }
 
+    fun decreaseTvVolume() {
+        smartTvDevice.decreaseSpeakerVolume()
+    }
+
     fun changeTvChannelToNext() {
         smartTvDevice.nextChannel()
     }
 
+    fun changeTvChannelToPrevious() {
+        smartTvDevice.previousChannel()
+    }
+
+    fun printSmartTvInfo() {
+        smartTvDevice.printDeviceInfo()
+    }
+
     fun turnOnLight() {
-        deviceTurnOnCount++
-        smartLightDevice.turnOn()
+        if (smartLightDevice.deviceStatus != "on") {
+            deviceTurnOnCount++
+            smartLightDevice.turnOn()
+        }
     }
 
     fun turnOffLight() {
-        deviceTurnOnCount--
-        smartLightDevice.turnOff()
+        if (smartLightDevice.deviceStatus == "on") {
+            deviceTurnOnCount--
+            smartLightDevice.turnOff()
+        }
     }
 
     fun increaseLightBrightness() {
         smartLightDevice.increaseBrightness()
     }
 
+    fun decreaseLightBrightness() {
+        smartLightDevice.decreaseBrightness()
+    }
+
+    fun printSmartLightInfo() {
+        smartLightDevice.printDeviceInfo()
+    }
+
     fun turnOffAllDevices() {
-        turnOffTv()
-        turnOffLight()
+        if (smartTvDevice.deviceStatus == "on") {
+            deviceTurnOnCount--
+            turnOffTv()
+        }
+        if (smartLightDevice.deviceStatus == "on") {
+            deviceTurnOnCount--
+            turnOffLight()
+        }
     }
 }
-
 class RangeRegulator(
     initialValue: Int,
     private val minValue: Int,
@@ -141,9 +216,39 @@ class RangeRegulator(
 }
 
 fun main() {
-    var smartDevice: SmartDevice = SmartTvDevice("Android TV", "Entertainment")
-    smartDevice.turnOn()
+    val smartHome = SmartHome(
+        SmartTvDevice("Android TV", "Entertainment"),
+        SmartLightDevice("Google Light", "Utility")
+    )
 
-    smartDevice = SmartLightDevice("Google Light", "Utility")
-    smartDevice.turnOn()
+    smartHome.printSmartTvInfo()
+
+    smartHome.increaseTvVolume()
+    smartHome.decreaseTvVolume()
+    smartHome.changeTvChannelToNext()
+    smartHome.changeTvChannelToPrevious()
+
+    smartHome.turnOnTv()
+    smartHome.increaseTvVolume()
+    smartHome.decreaseTvVolume()
+    smartHome.changeTvChannelToNext()
+    smartHome.changeTvChannelToPrevious()
+
+
+    println("\nNumber of enabled devices: ${smartHome.deviceTurnOnCount}\n")
+
+
+    smartHome.printSmartLightInfo()
+
+    smartHome.increaseLightBrightness()
+    smartHome.decreaseLightBrightness()
+
+    smartHome.turnOnLight()
+    smartHome.increaseLightBrightness()
+    smartHome.decreaseLightBrightness()
+
+    println("\nNumber of enabled devices: ${smartHome.deviceTurnOnCount}\n")
+
+    smartHome.turnOffAllDevices()
+    println("\nNumber of enabled devices: ${smartHome.deviceTurnOnCount}")
 }
