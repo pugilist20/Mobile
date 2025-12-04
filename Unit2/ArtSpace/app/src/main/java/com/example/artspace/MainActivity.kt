@@ -47,7 +47,7 @@ val sampleArtworks = listOf(
         id = 1,
         titleRes = R.string.art1_title,
         artistRes = R.string.art1_artist,
-        year = 1953,
+        year = 1931,
         imageResource = R.drawable.art1,
         descriptionRes = R.string.art1_description
     ),
@@ -55,7 +55,7 @@ val sampleArtworks = listOf(
         id = 2,
         titleRes = R.string.art2_title,
         artistRes = R.string.art2_artist,
-        year = 1973,
+        year = 1665,
         imageResource = R.drawable.art2,
         descriptionRes = R.string.art2_description
     ),
@@ -63,7 +63,7 @@ val sampleArtworks = listOf(
         id = 3,
         titleRes = R.string.art3_title,
         artistRes = R.string.art3_artist,
-        year = 1895,
+        year = 1850,
         imageResource = R.drawable.art3,
         descriptionRes = R.string.art3_description
     ),
@@ -71,7 +71,7 @@ val sampleArtworks = listOf(
         id = 4,
         titleRes = R.string.art4_title,
         artistRes = R.string.art4_artist,
-        year = 1895,
+        year = 1496,
         imageResource = R.drawable.art4,
         descriptionRes = R.string.no_description
     )
@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ArtSpaceTheme(darkTheme = false) { // 🔹 только светлая тема
+            ArtSpaceTheme(darkTheme = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ArtSpaceApp(modifier = Modifier.padding(innerPadding))
                 }
